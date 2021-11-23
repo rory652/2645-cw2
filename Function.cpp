@@ -4,8 +4,6 @@
 
 #include "Function.h"
 
-#include <utility>
-
 Function::Function() {
     inStr = "x";
     terms = 1;
@@ -18,4 +16,28 @@ Function::Function(std::string &in, int n, double l, double u) {
     terms = n;
     lower = l;
     upper = u;
+}
+
+char Function::findVariable() {
+    return 0;
+}
+
+void Function::calculateTerms() {
+
+}
+
+void Function::displayString() {
+
+}
+
+void Function::displayPlot() {
+
+}
+
+bool Function::validateString(std::string &func) {
+    return false;
+}
+
+double Function::integrate(std::string &func, double l, double u) {
+    return 0;
 }
