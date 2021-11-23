@@ -6,6 +6,6 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(.)
 
 add_executable(cw2
-        Function.cpp
-        Function.h
+        Function.cpp Function.h
+        gui.cpp gui.h
         main.cpp)
