@@ -7,10 +7,14 @@
 
 #include "Group.h"
 
+#include <string>
+#include <iostream>
+
 class Term : public Group {
     public:
         Term() : coefficient(1), var(false) {};
         Term(double c, bool v) : coefficient(c), var(v) {};
+        explicit Term(std::string inStr);
         double solve(double var) override;
     private:
         double coefficient;
