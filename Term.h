@@ -9,13 +9,16 @@
 
 #include <string>
 #include <iostream>
+#include <algorithm>
 
 class Term : public Group {
     public:
         Term() : coefficient(1), var(false) {};
         Term(double c, bool v) : coefficient(c), var(v) {};
         explicit Term(std::string inStr);
+
         double solve(double var) override;
+        void print() override;
     private:
         double coefficient;
         bool var;
