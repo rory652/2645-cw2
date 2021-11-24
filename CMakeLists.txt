@@ -7,4 +7,4 @@ include_directories(.)
 
 add_executable(cw2
         gui.cpp gui.h
-        main.cpp Group.h Term.cpp Term.h)
+        main.cpp Group.h Term.cpp Term.h Function.cpp Function.h)
