@@ -11,16 +11,17 @@
 #include <memory>
 #include <vector>
 #include <iostream>
+#include <cmath>
 
 class Function : public Group {
     public:
         Function();
-        Function(std::string inStr);
+        explicit Function(std::string inStr);
         double solve(double var) override;
     private:
         double coefficient;                         // Coefficient of overall function (if exists)
         std::vector<std::unique_ptr<Group>> terms;  // Vector containing pointers to functions/terms
-        std::vector<char> operators;                // Vector containing the operators for terms
+        std::vector<std::string> operators;                // Vector containing the operators for terms
 };
 
 
