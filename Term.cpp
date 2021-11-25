@@ -9,11 +9,14 @@ Term::Term(std::string inStr) {
     inStr.erase(std::remove(inStr.begin(), inStr.end(), ' '), inStr.end());
     inStr.erase(std::remove(inStr.begin(), inStr.end(), '('), inStr.end());
     inStr.erase(std::remove(inStr.begin(), inStr.end(), ')'), inStr.end());
-
     // Check if last character is a variable - i.e. not a number
     if (!std::isdigit(inStr.at(inStr.length()-1))) {
         var = true;
-        coefficient = std::stod(inStr.substr(0, inStr.length()-1));
+        if (inStr.length() > 1) {
+            coefficient = std::stod(inStr.substr(0, inStr.length() - 1));
+        } else {
+            coefficient = 1;
+        }
     } else {
         var = false;
         coefficient = std::stod(inStr);
@@ -30,8 +33,6 @@ double Term::solve(double v) {
 
 // Add different variable characters later?
 void Term::print() {
-    std::cout << coefficient;
-    if (var) {
-        std::cout << "x";
-    }
+    if (coefficient != 1) std::cout << coefficient;
+    if (var) std::cout << "x";
 }

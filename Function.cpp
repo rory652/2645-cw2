@@ -39,6 +39,7 @@ Function::Function(const std::string& inStr) {
             // Make sure to check for string overflow later
             if (is2Operator(inStr.substr(i, 1))) {
                 std::string group = inStr.substr(last, i - last);
+
                 // Has to be term as Functions involve brackets and are dealt with differently
                 if (isTerm(group)) {
                     terms.push_back(std::make_unique<Term>(group));
@@ -71,39 +72,76 @@ double Function::solve(double var) {
     // Creates a vector of operations in the correct order and a vector for results
     auto order = sortOperators();
 
-    return 0;
-    /*double total = 0;
-    for (int i = 0; i < terms.size() - 1; i++) {
-        // Temporary - would like to improve it at some point
-        // 2 term functions (left and right)
-        if (operators.at(i) == "+") {
-            total += terms.at(i)->solve(var) + terms.at(i+1)->solve(var);
-        } else if (operators.at(i) == "-") {
-            total += terms.at(i)->solve(var) - terms.at(i+1)->solve(var);
-        } else if (operators.at(i) == "*") {
-            total += terms.at(i)->solve(var) * terms.at(i+1)->solve(var);
-        } else if (operators.at(i) == "/") {
-            total += terms.at(i)->solve(var) / terms.at(i+1)->solve(var);
-        } else if (operators.at(i) == "^") {
-            total += pow(terms.at(i)->solve(var), terms.at(i+1)->solve(var));
-        }
-        // 1 term functions
-        else if (operators.at(i) == "sin") {
-            total += sin(terms.at(i)->solve(var));
-        } else if (operators.at(i) == "cos") {
-            total += cos(terms.at(i)->solve(var));
-        } else if (operators.at(i) == "tan") {
-            total += tan(terms.at(i)->solve(var));
-        } else if (operators.at(i) == "ln") {
-            total += log(terms.at(i)->solve(var));
-        } else if (operators.at(i) == "log") {
-            // Need to figure out how I'm doing base - just 2 for now
-            total += log2(terms.at(i)->solve(var));
-        } else if (operators.at(i) == "sqrt") {
-            total += sqrt(terms.at(i)->solve(var));
+    // Create a vector containing the solved value for each term and pre-allocating memory
+    std::vector<std::pair<int, double>> tempResults; tempResults.reserve(terms.size());
+    for (int t = 0; t < terms.size(); t++) {
+        tempResults.emplace_back(t, terms.at(t)->solve(var));
+    }
+    // Store the result from a calculation before it's put into tempResults
+    double result;
+
+    // Special case that occasionally happens when inside a 1 term function
+    if (operators.empty() && terms.size() == 1) {
+        return tempResults.at(0).second;
+    } else {
+        for (const auto& o : order) {
+            if (is1Operator(o.first)) {
+                /* Finds where the cumulative value is located - e.g. if an operation is term 0 + term 1 then:
+                    * the value of that is stored in tempResults[0].second
+                    * tempResults[1].first is set to 0 so that if term 1 is required, the program knows the correct value is stored in tempResults[0]
+                */
+                int leftPos = o.second;
+                while (leftPos != tempResults.at(leftPos).first) {
+                    leftPos = tempResults.at(leftPos).first;
+                }
+
+                if (o.first == "sin") {
+                    result = sin(tempResults.at(leftPos).second);
+                } else if (o.first == "cos") {
+                    result = cos(tempResults.at(leftPos).second);
+                } else if (o.first == "tan") {
+                    result = tan(tempResults.at(leftPos).second);
+                } else if (o.first == "lne") {
+                    result = log(tempResults.at(leftPos).second);
+                } else if (o.first == "log") {
+                    // Need to figure out how I'm doing base - just 2 for now
+                    result = log2(tempResults.at(leftPos).second);
+                } else if (o.first == "sqr") {
+                    result = sqrt(tempResults.at(leftPos).second);
+                }
+
+                // Update path to result and the temporary result
+                tempResults.at(leftPos).second = result;
+                tempResults.at(o.second).first = leftPos;
+            } else {
+                // Need to find the path for both the left (first) and right (second) terms.
+                int leftPos = o.second, rightPos = o.second+1;
+                while (leftPos != tempResults.at(leftPos).first || rightPos != tempResults.at(rightPos).first) {
+                    leftPos = tempResults.at(leftPos).first;
+                    rightPos = tempResults.at(rightPos).first;
+                }
+
+                if (o.first == "+") {
+                    result = tempResults.at(leftPos).second + tempResults.at(rightPos).second;
+                } else if (o.first == "-") {
+                    result = tempResults.at(leftPos).second - tempResults.at(rightPos).second;
+                } else if (o.first == "*") {
+                    result = tempResults.at(leftPos).second * tempResults.at(rightPos).second;
+                } else if (o.first == "/") {
+                    result = tempResults.at(leftPos).second / tempResults.at(rightPos).second;
+                } else if (o.first == "^") {
+                    // Currently incorrect - does (coef x)^n not coef(x^n)
+                    result = pow(tempResults.at(leftPos).second, tempResults.at(rightPos).second);
+                }
+
+                // Update path to result and the temporary result
+                tempResults.at(leftPos).second = result;
+                tempResults.at(o.second+1).first = leftPos;
+            }
         }
     }
-    return coefficient * total;*/
+
+    return coefficient*result;
 }
 
 void Function::print() {
@@ -147,7 +185,7 @@ bool Function::isTerm(std::string str) {
     str.erase(std::remove(str.begin(), str.end(), '('), str.end());
     str.erase(std::remove(str.begin(), str.end(), ')'), str.end());
 
-    std::regex r("[0-9]+\\.?[0-9]*[A-z]?");
+    std::regex r("([0-9]+(\\.[0-9]+)?[A-z]?)|[A-z]");
     return std::regex_match(str, r);
 }
 
@@ -167,15 +205,26 @@ bool Function::is2Operator(const std::string& str) {
  * 4. Multiplication and division
  * 5. Addition and subtraction
 */
-std::vector<std::string> Function::sortOperators() {
-    std::vector<std::string> sorted;
+std::vector<std::pair<std::string, int>> Function::sortOperators() {
+    std::vector<std::pair<std::string, int>> sorted;
+
+    // Left/only term for each operator
+    int left = 0;
+    for (const auto& op : operators) {
+        if (is2Operator(op)) {
+            sorted.emplace_back(op, left);
+            left++;
+        } else if (is1Operator(op)) {
+            sorted.emplace_back(op, left);
+        }
+    }
 
     std::sort(sorted.begin(), sorted.end(), &isPriority);
 
     return sorted;
 }
 
-bool isPriority(const std::string& a, const std::string& b) {
+bool isPriority(const std::pair<std::string, int>& a, const std::pair<std::string, int>& b) {
     // Map of each operation to it's position in the order of operations
     static std::map<std::string, int> operationOrder {
             {"sin", 2},
@@ -191,6 +240,6 @@ bool isPriority(const std::string& a, const std::string& b) {
             {"-", 5}
     };
 
-    return operationOrder[a] < operationOrder[b];
+    return operationOrder[a.first] < operationOrder[b.first];
 }
 

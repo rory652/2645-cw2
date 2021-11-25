@@ -10,9 +10,12 @@
 int main() {
     printHeader("Test");
     std::vector<std::unique_ptr<Group>> testVector;
-    testVector.push_back(std::make_unique<Function>("sin(2x)+4x-(7x+2)^3"));
-    testVector.at(0)->print();
-    std::cout << std::endl << testVector.at(0)->solve(4) << std::endl;
+    testVector.push_back(std::make_unique<Function>("sin(x)"));
+
+    testVector.at(0)->print(); std::cout << std::endl;
+
+    std::cout << std::fixed;
+    std::cout << testVector.at(0)->solve(10) << std::endl;
 
     return 0;
 }
