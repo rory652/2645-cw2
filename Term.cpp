@@ -11,11 +11,21 @@ Term::Term(std::string inStr) {
     inStr.erase(std::remove(inStr.begin(), inStr.end(), ')'), inStr.end());
     // Check if last character is a variable - i.e. not a number
     if (!std::isdigit(inStr.at(inStr.length()-1))) {
-        var = true;
-        if (inStr.length() > 1) {
-            coefficient = std::stod(inStr.substr(0, inStr.length() - 1));
+        // Add support for 'e' as a constant
+        if (inStr.at(inStr.length()-1) == 'e') {
+            var = false;
+            if (inStr.length() > 1) {
+                coefficient = M_E*std::stod(inStr.substr(0, inStr.length() - 1));
+            } else {
+                coefficient = M_E;
+            }
         } else {
-            coefficient = 1;
+            var = true;
+            if (inStr.length() > 1) {
+                coefficient = std::stod(inStr.substr(0, inStr.length() - 1));
+            } else {
+                coefficient = 1;
+            }
         }
     } else {
         var = false;

@@ -13,7 +13,7 @@
 int main() {
     printHeader("Test");
     std::vector<std::unique_ptr<Group>> testVector;
-    testVector.push_back(std::make_unique<Function>("sin(x)"));
+    testVector.push_back(std::make_unique<Function>("2x"));
 
     testVector.at(0)->print(); std::cout << std::endl;
 

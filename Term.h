@@ -10,6 +10,7 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
+#include <cmath>
 
 class Term : public Group {
     public:

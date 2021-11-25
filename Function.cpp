@@ -99,6 +99,7 @@ double Function::solve(double var) {
                     leftPos = tempResults.at(leftPos).first;
                 }
 
+                // Do operation
                 if (o.first == "sin") {
                     result = sin(tempResults.at(leftPos).second);
                 } else if (o.first == "cos") {
@@ -108,7 +109,7 @@ double Function::solve(double var) {
                 } else if (o.first == "lne") {
                     result = log(tempResults.at(leftPos).second);
                 } else if (o.first == "log") {
-                    // Need to figure out how I'm doing base - just 2 for now
+                    // TODO: Any base log?
                     result = log2(tempResults.at(leftPos).second);
                 } else if (o.first == "sqr") {
                     result = sqrt(tempResults.at(leftPos).second);
@@ -125,6 +126,7 @@ double Function::solve(double var) {
                     rightPos = tempResults.at(rightPos).first;
                 }
 
+                // Do operation
                 if (o.first == "+") {
                     result = tempResults.at(leftPos).second + tempResults.at(rightPos).second;
                 } else if (o.first == "-") {
