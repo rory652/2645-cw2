@@ -14,6 +14,10 @@
 #include <cmath>
 #include <regex>
 #include <algorithm>
+#include <map>
+
+// Checks if an operator has a higher priority than the other
+bool isPriority(const std::string& a, const std::string& b);
 
 class Function : public Group {
     public:
@@ -30,6 +34,7 @@ class Function : public Group {
         static bool isTerm(std::string str);                // Checks if the string is a term or a group
         static bool is1Operator(const std::string& str);    // Checks if a string is a one term operator or not
         static bool is2Operator(const std::string& str);    // Checks if a string is a two term operator or not
+        static std::vector<std::string> sortOperators();           // Sorts the vector of operators to be in the order operations
 };
 
 

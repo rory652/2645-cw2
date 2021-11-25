@@ -67,9 +67,12 @@ Function::Function(const std::string& inStr) {
     coefficient = 1;
 }
 
-// Not really working - add order of operations
 double Function::solve(double var) {
-    double total = 0;
+    // Creates a vector of operations in the correct order and a vector for results
+    auto order = sortOperators();
+
+    return 0;
+    /*double total = 0;
     for (int i = 0; i < terms.size() - 1; i++) {
         // Temporary - would like to improve it at some point
         // 2 term functions (left and right)
@@ -100,14 +103,13 @@ double Function::solve(double var) {
             total += sqrt(terms.at(i)->solve(var));
         }
     }
-    return coefficient * total;
+    return coefficient * total;*/
 }
 
 void Function::print() {
     // Keeps track of position in terms and in operators respectively
     int t = 0, o = 0;
-    // Might be a nicer way - just don't want the outer-most brackets
-    if (terms.size() != 1) std::cout << "(";
+    std::cout << "(";
 
     while (t < terms.size() && o < operators.size()) {
         if (is2Operator(operators.at(o))) {
@@ -136,7 +138,7 @@ void Function::print() {
     if (t < terms.size()) {
         terms.at(t)->print();
     }
-    if (terms.size() != 1) std::cout << ")";
+    std::cout << ")";
 }
 
 bool Function::isTerm(std::string str) {
@@ -156,5 +158,39 @@ bool Function::is1Operator(const std::string& str) {
 
 bool Function::is2Operator(const std::string& str) {
     return str == "+" || str == "-" || str == "*" || str == "/" || str == "^";
+}
+
+/* Order of operations:
+ * 1. Brackets - should be handled automatically through recursion
+ * 2. Trigonometric Functions - no real standard, so I'm just getting it done first
+ * 3. Indices and logarithms
+ * 4. Multiplication and division
+ * 5. Addition and subtraction
+*/
+std::vector<std::string> Function::sortOperators() {
+    std::vector<std::string> sorted;
+
+    std::sort(sorted.begin(), sorted.end(), &isPriority);
+
+    return sorted;
+}
+
+bool isPriority(const std::string& a, const std::string& b) {
+    // Map of each operation to it's position in the order of operations
+    static std::map<std::string, int> operationOrder {
+            {"sin", 2},
+            {"cos", 2},
+            {"tan", 2},
+            {"log", 3},
+            {"lne", 4},
+            {"sqr", 3},
+            {"^", 3},
+            {"*", 4},
+            {"/", 4},
+            {"+", 5},
+            {"-", 5}
+    };
+
+    return operationOrder[a] < operationOrder[b];
 }
 

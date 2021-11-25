@@ -1,7 +1,6 @@
 #include "gui.h"
 
 #include "Group.h"
-#include "Term.h"
 #include "Function.h"
 
 #include <iostream>
