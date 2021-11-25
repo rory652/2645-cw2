@@ -7,6 +7,9 @@
 #include <vector>
 #include <memory>
 
+// TODO: Equation Class
+// TODO: Testing
+
 int main() {
     printHeader("Test");
     std::vector<std::unique_ptr<Group>> testVector;

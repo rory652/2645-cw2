@@ -4,6 +4,9 @@
 
 #include "Function.h"
 
+// TODO: Write function that checks for mathematical impossibilities and anything else not already covered.
+// TODO: Function coefficients
+
 // Shouldn't really ever be called - will be used for testing
 Function::Function() {
     coefficient = 1;
@@ -45,6 +48,7 @@ Function::Function(const std::string& inStr) {
                     terms.push_back(std::make_unique<Term>(group));
                 }
 
+                // TODO: Ensure that if a term/function isn't actually created, the operator isn't added and an error it reported
                 operators.emplace_back(inStr.substr(i, 1));
                 last = i + 1;
             } else if (is1Operator(inStr.substr(i, 3))) {
@@ -130,7 +134,7 @@ double Function::solve(double var) {
                 } else if (o.first == "/") {
                     result = tempResults.at(leftPos).second / tempResults.at(rightPos).second;
                 } else if (o.first == "^") {
-                    // Currently incorrect - does (coef x)^n not coef(x^n)
+                    // TODO: This is wrong, fix
                     result = pow(tempResults.at(leftPos).second, tempResults.at(rightPos).second);
                 }
 
@@ -147,6 +151,7 @@ double Function::solve(double var) {
 void Function::print() {
     // Keeps track of position in terms and in operators respectively
     int t = 0, o = 0;
+    // TODO: Remove brackets on outermost print
     std::cout << "(";
 
     while (t < terms.size() && o < operators.size()) {
@@ -185,9 +190,12 @@ bool Function::isTerm(std::string str) {
     str.erase(std::remove(str.begin(), str.end(), '('), str.end());
     str.erase(std::remove(str.begin(), str.end(), ')'), str.end());
 
+    // TODO: Make this cover all possible options
     std::regex r("([0-9]+(\\.[0-9]+)?[A-z]?)|[A-z]");
     return std::regex_match(str, r);
 }
+
+// TODO: Write isFunction function for extra validation
 
 bool Function::is1Operator(const std::string& str) {
     // I gave 3 letter mnemonics to functions that had a name longer/shorter - square root -> sqr and ln -> lne
