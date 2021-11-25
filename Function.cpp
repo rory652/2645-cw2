@@ -46,6 +46,13 @@ Function::Function(const std::string& inStr) {
 
                 operators.emplace_back(inStr.substr(i, 1));
                 last = i + 1;
+            } else if (is1Operator(inStr.substr(i, 3))) {
+                std::string op = inStr.substr(i, 3);
+                operators.emplace_back(op);
+
+                // Move i to the last letter of the 3 letter operator
+                i += 2;
+                last = i+1;
             }
 
             // Dealing with last character - should only be 2nd part of a 2 part operator
@@ -116,10 +123,13 @@ void Function::print() {
                 terms.at(t)->print();
                 t++;
             }
-
-            // Increment o
-            o++;
+        } else if (is1Operator(operators.at(o))) {
+            std::cout << operators.at(o);
+            terms.at(t)->print();
+            t++;
         }
+        // Increment o
+        o++;
     }
 
     // Prints any left-over terms
@@ -140,7 +150,8 @@ bool Function::isTerm(std::string str) {
 }
 
 bool Function::is1Operator(const std::string& str) {
-    return false;
+    // I gave 3 letter mnemonics to functions that had a name longer/shorter - square root -> sqr and ln -> lne
+    return str == "sin" || str == "cos" || str == "tan" || str == "sqr" || str == "log" || str == "lne";
 }
 
 bool Function::is2Operator(const std::string& str) {
