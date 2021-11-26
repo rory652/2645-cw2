@@ -63,8 +63,13 @@ bool functionTests() {
 bool testFunction_String(std::string in, double expected) {
     return false;
 }
-bool testFunction_Solve(int var, double expected) {
-    return false;
+bool testFunction_Solve(Function f, double var, double expected) {
+    double result = f.solve(var);
+    if (result != expected) {
+        std::cout << "Input '" << var << "' failed. Should be " << expected << " was " << result << std::endl;
+        return false;
+    }
+    return true;
 }
 bool test_isDouble(std::string in, bool expected) {
     bool result = isDouble(in);
@@ -81,12 +86,22 @@ bool equationTests() {
 bool testEquation_String(std::string in, double expected) {
     return false;
 }
-bool testEquation_Solve(int var, double expected) {
-    return false;
+bool testEquation_Solve(Equation e, double var, double expected) {
+    double result = e.solve(var);
+    if (result != expected) {
+        std::cout << "Input '" << var << "' failed. Should be " << expected << " was " << result << std::endl;
+        return false;
+    }
+    return true;
 }
 bool testEquation_Integrate(Equation e, double expected) {
-    return false;
+    double result = e.integrate(0, 0, 0);   // Just testing that integration works - trig tested by Fourier function
+    if (result != expected) {
+        std::cout << "Input failed. Should be " << expected << " was " << result << std::endl;
+        return false;
+    }
+    return true;
 }
-bool testEquation_Fourier(int var, std::vector<double> expected) {
+bool testEquation_Fourier(Equation e, double var, std::vector<double> expected) {
     return false;
 }

@@ -18,7 +18,7 @@
 // Checks if an operator has a higher priority than the other
 bool isPriority(const std::pair<std::string, int>& a, const std::pair<std::string, int>& b);
 // Checks if the string is a double - e.g. 7.12345
-bool isDouble(std::string s);
+bool isDouble(const std::string& s);
 
 class Function : public Group {
     public:
@@ -28,7 +28,6 @@ class Function : public Group {
         double solve(double var) override;
         void print() override;
     protected:
-        double coefficient;                                 // Coefficient of overall function (if exists)
         std::vector<std::unique_ptr<Group>> terms;          // Vector containing pointers to functions/terms
         std::vector<std::string> operators;                 // Vector containing the operators for terms
 

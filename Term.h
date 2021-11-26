@@ -20,8 +20,10 @@ class Term : public Group {
 
         double solve(double var) override;
         void print() override;
-    private:
+
+        // Public because it needs to be accessed by other functions
         double coefficient;
+    private:
         bool var;
 };
 

@@ -9,6 +9,9 @@ class Group {
     public:
         virtual double solve(double var) = 0;
         virtual void print() = 0;
+
+        // Public because it needs to be accessed by other functions
+        double coefficient;
 };
 
 

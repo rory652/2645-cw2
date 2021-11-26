@@ -5,7 +5,6 @@
 #include "Function.h"
 
 // TODO: Write function that checks for mathematical impossibilities and anything else not already covered.
-// TODO: Function coefficients
 
 // Shouldn't really ever be called - here just in case
 Function::Function() {
@@ -31,6 +30,15 @@ Function::Function(const std::string& inStr) {
             if (brackets == 0) {
                 std::string subFunction = inStr.substr(open + 1, i - (open + 1));
                 terms.push_back(std::make_unique<Function>(subFunction));
+
+                // Check for coefficient
+                if (open > last) {
+                    std::cout << inStr.substr(last, open - last) << std::endl;
+                    if (isDouble(inStr.substr(last, open - last))) {
+                        terms.at(terms.size()-1)->coefficient = std::stod(inStr.substr(last, open - last));
+                    }
+                }
+
                 open = -1;
                 last = i + 1;
             }
@@ -67,7 +75,6 @@ Function::Function(const std::string& inStr) {
         }
     }
 
-    // Temporary
     coefficient = 1;
 }
 
@@ -152,7 +159,10 @@ double Function::solve(double var) {
 void Function::print() {
     // Keeps track of position in terms and in operators respectively
     int t = 0, o = 0;
-    // TODO: Remove brackets on outermost print
+
+    if (coefficient != 1) {
+        std::cout << coefficient;
+    }
     std::cout << "(";
 
     while (t < terms.size() && o < operators.size()) {
@@ -211,7 +221,7 @@ bool Function::isTerm(std::string str) {
     return false;
 }
 
-bool isDouble(std::string s) {
+bool isDouble(const std::string& s) {
     bool pointFound = false;
     // Loop through string checking each character, returning false
     // if there are multiple decimal points or any other character isn't a digit
