@@ -11,4 +11,5 @@ add_executable(cw2
         Group.h
         Term.h Term.cpp
         Function.h Function.cpp
-        Equation.h Equation.cpp)
+        Equation.h Equation.cpp
+        tests.h tests.cpp)

@@ -1,11 +1,16 @@
 #include "gui.h"
 #include "Equation.h"
+#include "tests.h"
 
 #include <iostream>
 
 // TODO: Testing
 
-int main() {
+int main(int argc, char *argv[]) {
+    if (argc == 2 && std::string(argv[1]) == "test") {
+        printHeader("Testing");
+        runTests();
+    }
     // Declare functions
     int terms; double lower, upper;
     std::string input;
