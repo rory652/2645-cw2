@@ -12,6 +12,9 @@
 #include <algorithm>
 #include <cmath>
 
+// Checks if the string is a double - e.g. 7.12345
+bool isDouble(const std::string& s);
+
 class Term : public Group {
     public:
         Term() : coefficient(1), var(false) {};

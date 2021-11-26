@@ -9,32 +9,37 @@ Term::Term(std::string inStr) {
     inStr.erase(std::remove(inStr.begin(), inStr.end(), ' '), inStr.end());
     inStr.erase(std::remove(inStr.begin(), inStr.end(), '('), inStr.end());
     inStr.erase(std::remove(inStr.begin(), inStr.end(), ')'), inStr.end());
+
+    int len = inStr.size();
+    var = false;    // Assume not a variable
+
     if (!inStr.empty()) {
-        // Check if last character is a variable - i.e. not a number
-        if (std::isalpha(inStr.at(inStr.length()-1))) {
-            // Add support for 'e' as a constant
-            if (inStr.at(inStr.length()-1) == 'e') {
-                var = false;
-                if (inStr.length() > 1) {
-                    coefficient = M_E*std::stod(inStr.substr(0, inStr.length() - 1));
-                } else {
-                    coefficient = M_E;
-                }
+        if (std::isalpha(inStr.at(len-1)) && inStr.at(len-1) != 'e') {
+            if (isDouble(inStr.substr(0, len-1))) {
+                coefficient = std::stod(inStr.substr(0, len-1));
             } else {
-                var = true;
-                if (inStr.length() > 1) {
-                    coefficient = std::stod(inStr.substr(0, inStr.length() - 1));
-                } else {
-                    coefficient = 1;
-                }
+                coefficient = 1;
             }
-        } else {
+
+            var = true;
+        } else if (inStr.at(len-1) == 'e') {
+            if (isDouble(inStr.substr(0, len-1))) {
+                coefficient = M_E*std::stod(inStr.substr(0, len-1));
+            } else {
+                coefficient = M_E;
+            }
+
             var = false;
-            coefficient = std::stod(inStr);
+        } else {
+            if (isDouble(inStr.substr(0, len))) {
+                coefficient = std::stod(inStr.substr(0, len));
+            } else {
+                // No letter and no number -> invalid
+                coefficient = -1;
+            }
         }
     } else {
-        // Invalid string passed, -1 used as coefficient is always positive
-        var = false;
+        // No letter and no number -> invalid
         coefficient = -1;
     }
 }
@@ -49,6 +54,25 @@ double Term::solve(double v) {
 
 // Add different variable characters later?
 void Term::print() {
-    if (coefficient != 1) std::cout << coefficient;
+    if (coefficient != 1 || !var) std::cout << coefficient;
     if (var) std::cout << "x";
+}
+
+bool isDouble(const std::string& s) {
+    // Deal with empty strings
+    if (s.empty()) return false;
+
+    bool pointFound = false;
+    // Loop through string checking each character, returning false
+    // if there are multiple decimal points or any other character isn't a digit
+    for (auto c : s) {
+        if (std::isdigit(c)) {
+            continue;
+        } else if (c == '.' && !pointFound) {
+            pointFound = true;
+        } else {
+            return false;
+        }
+    }
+    return true;
 }

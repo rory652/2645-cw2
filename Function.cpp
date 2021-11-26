@@ -221,22 +221,6 @@ bool Function::isTerm(std::string str) {
     return false;
 }
 
-bool isDouble(const std::string& s) {
-    bool pointFound = false;
-    // Loop through string checking each character, returning false
-    // if there are multiple decimal points or any other character isn't a digit
-    for (auto c : s) {
-        if (std::isdigit(c)) {
-            continue;
-        } else if (c == '.' && !pointFound) {
-            pointFound = true;
-        } else {
-            return false;
-        }
-    }
-    return true;
-}
-
 // TODO: Write isFunction function for extra validation
 
 bool Function::is1Operator(const std::string& str) {
