@@ -8,9 +8,10 @@
 
 int main() {
     printHeader("Test");
-    Equation test("x^2", 1, 0, 1);
-    test.print(); std::cout << std::endl;
-    std::cout << test.integrate() << std::endl;
+    Equation test("(x+3)^2-5", 10, 0, 1);
+    //test.print(); std::cout << std::endl;
+    test.fourier();
+    test.printFourier();
 
     return 0;
 }

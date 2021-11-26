@@ -6,15 +6,21 @@
 #define INC_2645_CW2_EQUATION_H
 
 #include "Function.h"
+
 // Class containing the extra information for the equation
 class Equation : public Function {
     public:
         // Uses the Function constructor for the actual equation to avoid repeating code
-        Equation(std::string inStr, int n, double l, double u) : Function(inStr), numTerms(n), lower(l), upper(u){};
+        Equation(std::string inStr, int n, double l, double u) : Function(inStr), numTerms(n), lower(l), upper(u), a0(0){};
 
-        void print();
-        double integrate(); // Integrates the function between the upper and lower bounds
-        void fourier();     // Finds the values for the fourier series
+        /*  trig: selects trig function - 0=none, 1=cosine, 2=sine
+         *  n:    value to multiply f by (e.g. current term)
+         *  f:    fundamental frequency in radians
+         */
+        double integrate(int trig, double n, double f); // Integrates the function between the upper and lower bounds
+        void fourier();                                 // Finds the values for the fourier series
+        void printFourier();                            // Prints fourier series
+        void print();                                   // Prints original equation
     private:
         // Extra input values
         int numTerms;           // Number of terms to calculate
