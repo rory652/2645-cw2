@@ -37,6 +37,20 @@ bool termTests() {
         if (!testTerm_Solve(Term(2.24, true), 2, 4.48)) allCorrect = false;
         if (!testTerm_Solve(Term(1.56, true), 4.29, 6.6924)) allCorrect = false;
 
+    // Test isDouble:
+        // Valid
+        if (!test_isDouble("1", true)) allCorrect = false;
+        if (!test_isDouble("1.123", true)) allCorrect = false;
+        if (!test_isDouble("123", true)) allCorrect = false;
+        if (!test_isDouble("1123.1387", true)) allCorrect = false;
+        // Invalid Inputs
+        if (!test_isDouble("word", false)) allCorrect = false;
+        if (!test_isDouble("1.1.1.1", false)) allCorrect = false;
+        if (!test_isDouble("£1.00", false)) allCorrect = false;
+        if (!test_isDouble("400x", false)) allCorrect = false;
+        if (!test_isDouble("400xx", false)) allCorrect = false;
+        if (!test_isDouble("1,00", false)) allCorrect = false;
+        if (!test_isDouble("1.276x.123x", false)) allCorrect = false;
     return allCorrect;
 }
 bool testTerm_String(std::string in, double expected) {
@@ -49,9 +63,17 @@ bool testTerm_String(std::string in, double expected) {
     return true;
 }
 bool testTerm_Solve(Term t, double var, double expected) {
-    double result = t.solve(1);
+    double result = t.solve(var);
     if (result != expected) {
         std::cout << "Input '" << var << "' failed. Should be " << expected << " was " << result << std::endl;
+        return false;
+    }
+    return true;
+}
+bool test_isDouble(std::string in, bool expected) {
+    bool result = isDouble(in);
+    if (result != expected) {
+        std::cout << "Input '" << in << "' failed. Should be " << expected << " was " << result << std::endl;
         return false;
     }
     return true;
@@ -67,14 +89,6 @@ bool testFunction_Solve(Function f, double var, double expected) {
     double result = f.solve(var);
     if (result != expected) {
         std::cout << "Input '" << var << "' failed. Should be " << expected << " was " << result << std::endl;
-        return false;
-    }
-    return true;
-}
-bool test_isDouble(std::string in, bool expected) {
-    bool result = isDouble(in);
-    if (result != expected) {
-        std::cout << "Input '" << in << "' failed. Should be " << expected << " was " << result << std::endl;
         return false;
     }
     return true;

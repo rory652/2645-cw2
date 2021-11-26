@@ -55,7 +55,7 @@ Function::Function(const std::string& inStr) {
                     terms.push_back(std::make_unique<Term>(group));
                 }
 
-                // TODO: Ensure that if a term/function isn't actually created, the operator isn't added and an error it reported
+                // TODO: Ensure that if a term/function isn't actually created, the operator isn't added and an error is reported
                 operators.emplace_back(inStr.substr(i, 1));
                 last = i + 1;
             } else if (is1Operator(inStr.substr(i, 3))) {

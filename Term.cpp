@@ -15,18 +15,23 @@ Term::Term(std::string inStr) {
 
     if (!inStr.empty()) {
         if (std::isalpha(inStr.at(len-1)) && inStr.at(len-1) != 'e') {
+            var = true;
             if (isDouble(inStr.substr(0, len-1))) {
                 coefficient = std::stod(inStr.substr(0, len-1));
-            } else {
+            } else if (inStr.substr(0, len-1).empty()) {
                 coefficient = 1;
+            } else {
+                coefficient = -1;
+                var = false;
             }
-
-            var = true;
         } else if (inStr.at(len-1) == 'e') {
             if (isDouble(inStr.substr(0, len-1))) {
                 coefficient = M_E*std::stod(inStr.substr(0, len-1));
-            } else {
+            } else if (inStr.substr(0, len-1).empty()) {
                 coefficient = M_E;
+            } else {
+                coefficient = -1;
+                var = false;
             }
 
             var = false;
