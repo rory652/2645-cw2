@@ -6,5 +6,9 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(.)
 
 add_executable(cw2
-        gui.cpp gui.h
-        main.cpp Group.h Term.cpp Term.h Function.cpp Function.h)
+        gui.h gui.cpp
+        main.cpp
+        Group.h
+        Term.h Term.cpp
+        Function.h Function.cpp
+        Equation.h Equation.cpp)

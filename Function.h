@@ -26,7 +26,7 @@ class Function : public Group {
 
         double solve(double var) override;
         void print() override;
-    private:
+    protected:
         double coefficient;                                 // Coefficient of overall function (if exists)
         std::vector<std::unique_ptr<Group>> terms;          // Vector containing pointers to functions/terms
         std::vector<std::string> operators;                 // Vector containing the operators for terms
