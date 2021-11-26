@@ -7,7 +7,8 @@
 // TODO: Finish this
 
 void printHeader(std::string header) {
-    std::cout << getLine(10) << " " << header << " " << getLine(10) << std::endl;
+    int totalLength = 50, sideLength = (totalLength-header.length())/2;
+    std::cout << getLine(sideLength) << " " << header << " " << getLine(sideLength) << std::endl;
 }
 
 /* Planned functions:
@@ -18,7 +19,9 @@ void printHeader(std::string header) {
     Powers: x^, sqrt(x)
 */
 void printHelp() {
-
+    std::cout << "'+' - Addition\t\t\t'-' - Subtraction\t\t'*' - Multiplication\t'/' - Division" << std::endl;;
+    std::cout << "'lne' - Natural Logarithm\t'log' - Base 2 Logarithm\t'^' - Power\t\t'sqr' - Square Root" << std::endl;
+    std::cout << "'sin' - Sine\t\t\t'cos' - Cosine\t\t\t'tan' - Tangent" << std::endl;
 }
 
 std::string getLine(int n) {

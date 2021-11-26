@@ -3,15 +3,31 @@
 
 #include <iostream>
 
-// TODO: Equation Class
 // TODO: Testing
 
 int main() {
-    printHeader("Test");
-    Equation test("(x+3)^2-5", 10, 0, 1);
-    //test.print(); std::cout << std::endl;
-    test.fourier();
-    test.printFourier();
+    // Declare functions
+    int terms; double lower, upper;
+    std::string input;
+
+    printHeader("Help Key");
+    printHelp();
+    printHeader("Enter Equation");
+    std::cin >> input;
+    printHeader("Enter Number of Fourier Terms");
+    std::cin >> terms;
+    printHeader("Enter lower bound of period");
+    std::cin >> lower;
+    printHeader("Enter upper bound of period");
+    std::cin >> upper;
+
+    Equation func(input, terms, lower, upper);
+
+    printHeader("Your Equation");
+    func.print(); std::cout << std::endl;
+    func.fourier();
+    printHeader("Fourier Series");
+    func.printFourier();
 
     return 0;
 }
