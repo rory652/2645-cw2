@@ -7,11 +7,10 @@
 // TODO: Write function that checks for mathematical impossibilities and anything else not already covered.
 // TODO: Function coefficients
 
-// Shouldn't really ever be called - will be used for testing
+// Shouldn't really ever be called - here just in case
 Function::Function() {
     coefficient = 1;
-    terms.push_back(std::make_unique<Term>(4, false));
-    terms.push_back(std::make_unique<Function>("test"));
+    terms.push_back(std::make_unique<Term>("x"));
     operators.emplace_back("sqrt");
 }
 

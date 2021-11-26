@@ -15,7 +15,7 @@
 class Term : public Group {
     public:
         Term() : coefficient(1), var(false) {};
-        Term(double c, bool v) : coefficient(c), var(v) {};
+        Term(double c, bool v) : coefficient(c), var(v) {}; // Only used in testing
         explicit Term(std::string inStr);
 
         double solve(double var) override;

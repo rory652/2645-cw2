@@ -16,12 +16,12 @@ void runTests();
 
 bool termTests();                                           // Overall test for 'Term' class
 bool testTerm_String(std::string in, double expected);      // Test creating Term with string
-bool testTerm_Values(int c, bool v, double expected);       // Test creation just using values
-bool testTerm_Solve(int var, double expected);              // Test solving terms
+bool testTerm_Solve(Term t, double var, double expected);   // Test solving terms
 
 bool functionTests();
 bool testFunction_String(std::string in, double expected);
 bool testFunction_Solve(int var, double expected);
+bool test_isDouble(std::string in, bool expected);
 
 bool equationTests();
 bool testEquation_String(std::string in, double expected);
