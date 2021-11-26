@@ -186,15 +186,46 @@ void Function::print() {
     std::cout << ")";
 }
 
+/* Valid terms take the form of:
+ * <double>
+ * <double><char>
+ * <char>
+ */
 bool Function::isTerm(std::string str) {
     // Remove any lingering whitespace/brackets
     str.erase(std::remove(str.begin(), str.end(), ' '), str.end());
     str.erase(std::remove(str.begin(), str.end(), '('), str.end());
     str.erase(std::remove(str.begin(), str.end(), ')'), str.end());
 
-    // TODO: Make this cover all possible options
-    std::regex r("([0-9]+(\\.[0-9]+)?[A-z]?)|[A-z]");
-    return std::regex_match(str, r);
+    if (!str.empty()) {
+        if (str.length() > 1) {
+            if (std::isalpha(str.at(str.length()-1)) && isDouble(str.substr(0, str.length()-1))) {
+                return true;
+            } else if (isDouble(str.substr(0, str.length()))) {
+                return true;
+            }
+        } else if (std::isalnum(str.at(0))) {
+            // either 'x' or '1'
+            return true;
+        }
+    }
+    return false;
+}
+
+bool isDouble(std::string s) {
+    bool pointFound = false;
+    // Loop through string checking each character, returning false
+    // if there are multiple decimal points or any other character isn't a digit
+    for (auto c : s) {
+        if (std::isdigit(c)) {
+            continue;
+        } else if (c == '.' && !pointFound) {
+            pointFound = true;
+        } else {
+            return false;
+        }
+    }
+    return true;
 }
 
 // TODO: Write isFunction function for extra validation

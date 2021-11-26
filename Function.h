@@ -12,12 +12,13 @@
 #include <vector>
 #include <iostream>
 #include <cmath>
-#include <regex>
 #include <algorithm>
 #include <map>
 
 // Checks if an operator has a higher priority than the other
 bool isPriority(const std::pair<std::string, int>& a, const std::pair<std::string, int>& b);
+// Checks if the string is a double - e.g. 7.12345
+bool isDouble(std::string s);
 
 class Function : public Group {
     public:
