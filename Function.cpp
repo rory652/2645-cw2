@@ -141,7 +141,9 @@ double Function::solve(double var) {
                 } else if (o.first == "/") {
                     result = tempResults.at(leftPos).second / tempResults.at(rightPos).second;
                 } else if (o.first == "^") {
-                    double correct = terms.at(leftPos)->coefficient; // Use the coefficient to make the power actually correct
+                    // Use the coefficient in calculation to make the power actually correct
+                    // Without: 4x^2 = (4x^2) = 16*x^2 With: 4x^2 = 4*x^2 (as intended)
+                    double correct = terms.at(leftPos)->coefficient;
                     result = correct*pow((tempResults.at(leftPos).second/correct), tempResults.at(rightPos).second);
                 }
 

@@ -6,7 +6,7 @@
 
 // I will be using Simpson's Rule to find the integral - https://mathworld.wolfram.com/SimpsonsRule.html
 double Equation::integrate(int trig, double n, double f) {
-    double columns = 1000;                  // Number of columns for the integration, higher = more accurate. Must be even.
+    double columns = 10000;                 // Number of columns for the integration, higher = more accurate. Must be even.
     double width = (upper - lower)/columns; // Width of each column
     double total = 0;                       // Total sum of each column
 

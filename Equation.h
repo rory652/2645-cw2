@@ -21,6 +21,8 @@ class Equation : public Function {
         void fourier();                                 // Finds the values for the fourier series
         void printFourier();                            // Prints fourier series
         void print();                                   // Prints original equation
+
+        std::pair<double, double> getFourier(int pos) {return ab_n.at(pos);}    // Return the fourier values at pos - ONLY for testing
     private:
         // Extra input values
         int numTerms;           // Number of terms to calculate
