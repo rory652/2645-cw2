@@ -4,8 +4,6 @@
 
 #include "gui.h"
 
-// TODO: Finish this
-
 void printHeader(std::string header) {
     int totalLength = 50, sideLength = (totalLength-header.length())/2;
     std::cout << getLine(sideLength) << " " << header << " " << getLine(sideLength) << std::endl;

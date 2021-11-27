@@ -17,15 +17,12 @@ bool isDouble(const std::string& s);
 
 class Term : public Group {
     public:
-        Term() : coefficient(1), var(false) {};
-        Term(double c, bool v) : coefficient(c), var(v) {}; // Only used in testing
+        Term();
+        Term(double c, bool v); // Only used in testing
         explicit Term(std::string inStr);
 
         double solve(double var) override;
         void print() override;
-
-        // Public because it needs to be accessed by other functions
-        double coefficient;
     private:
         bool var;
 };

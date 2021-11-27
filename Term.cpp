@@ -4,6 +4,12 @@
 
 #include "Term.h"
 
+// TODO: pi support
+
+// These 2 are for testing
+Term::Term() {coefficient=1; var=false;}
+Term::Term(double c, bool v) {coefficient=c; var=v;}
+
 Term::Term(std::string inStr) {
     // Remove any lingering whitespace/brackets
     inStr.erase(std::remove(inStr.begin(), inStr.end(), ' '), inStr.end());
@@ -18,7 +24,7 @@ Term::Term(std::string inStr) {
             var = true;
             if (isDouble(inStr.substr(0, len-1))) {
                 coefficient = std::stod(inStr.substr(0, len-1));
-            } else if (inStr.substr(0, len-1).empty()) {
+            } else if (inStr.length()==1) {
                 coefficient = 1;
             } else {
                 coefficient = -1;
@@ -31,7 +37,6 @@ Term::Term(std::string inStr) {
                 coefficient = M_E;
             } else {
                 coefficient = -1;
-                var = false;
             }
 
             var = false;

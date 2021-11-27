@@ -33,7 +33,6 @@ Function::Function(const std::string& inStr) {
 
                 // Check for coefficient
                 if (open > last) {
-                    std::cout << inStr.substr(last, open - last) << std::endl;
                     if (isDouble(inStr.substr(last, open - last))) {
                         terms.at(terms.size()-1)->coefficient = std::stod(inStr.substr(last, open - last));
                     }
@@ -142,8 +141,8 @@ double Function::solve(double var) {
                 } else if (o.first == "/") {
                     result = tempResults.at(leftPos).second / tempResults.at(rightPos).second;
                 } else if (o.first == "^") {
-                    // TODO: This is wrong, fix
-                    result = pow(tempResults.at(leftPos).second, tempResults.at(rightPos).second);
+                    double correct = terms.at(leftPos)->coefficient; // Use the coefficient to make the power actually correct
+                    result = correct*pow((tempResults.at(leftPos).second/correct), tempResults.at(rightPos).second);
                 }
 
                 // Update path to result and the temporary result
