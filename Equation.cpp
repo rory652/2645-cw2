@@ -49,7 +49,7 @@ bool isEquation(const std::string &s) {
                 brackets--;
 
                 if (brackets == 0) {
-                    if (!isEquation(s.substr(open + 1, i - (open + 1)))) {
+                    if (!isEquation(s.substr(open + 1, i - (open+1)))) {
                         std::cout << "Error: invalid sub-function" << std::endl;
                         return false;
                     } else if (i != s.length() - 1) {
@@ -57,17 +57,14 @@ bool isEquation(const std::string &s) {
                             std::cout << "Error: no operator after closing bracket" << std::endl;
                             return false;
                         }
+                        open = -1;
+                        last = i + 1;
                     }
                 } else if (brackets < 0) {
                     std::cout << "Error: missing matching close bracket" << std::endl;
                     return false;
                 }
-
-                open = -1;
-                last = i + 1;
-            }
-
-            if (brackets == 0) {
+            } else if (brackets == 0) {
                 // Make sure to check for string overflow later
                 if (is2Operator(s.substr(i, 1))) {
                     if (last == i && s.at(i-1) != ')') {
@@ -96,9 +93,8 @@ bool isEquation(const std::string &s) {
                     last = i+1;
                 }
 
-                // Dealing with last character - should only be 2nd part of a 2 part operator
                 if (i == s.length() - 1 && last != s.length()) {
-                    if(!isTerm(s.substr(last, (i-last)+1))) {
+                    if(!isTerm(s.substr(last))) {
                         std::cout << "Error: invalid last term" << std::endl;
                         return false;
                     }
