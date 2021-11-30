@@ -98,13 +98,6 @@ bool functionTests() {
         if (!testFunction_String("sqr(x)", 1)) allCorrect = false;
         if (!testFunction_String("(x+(x+(x+(x+(x+(x+(x)))))))", 7)) allCorrect = false;
         if (!testFunction_String("sqr(x)-(x^2-4x)^3+3(x+1)^2", 40)) allCorrect = false;
-        // Invalid Inputs
-        /*
-        if (!testFunction_String("", -1)) allCorrect = false;
-        if (!testFunction_String("()", -1)) allCorrect = false;
-        if (!testFunction_String("x++1", -1)) allCorrect = false;
-        if (!testFunction_String("x34+sin()", -1)) allCorrect = false;
-        if (!testFunction_String("x^2+(2x-1", -1)) allCorrect = false;*/
 
     // Test Solve:
         // Valid Inputs - at this point, you can assume that all inputs will be valid.
@@ -139,6 +132,31 @@ bool testFunction_Solve(Function f, double var, double expected) {
 // Don't need to test constructor or solve as it uses the code from Function
 bool equationTests() {
     bool allCorrect = true;
+    // Test isEquation:
+        // Valid Inputs
+        if (!test_isEquation("sin(4x)", true)) allCorrect = false;
+        if (!test_isEquation("3x-1", true)) allCorrect = false;
+        if (!test_isEquation("lnex", true)) allCorrect = false;
+        if (!test_isEquation("x^2", true)) allCorrect = false;
+        if (!test_isEquation("cos2x", true)) allCorrect = false;
+        if (!test_isEquation("x", true)) allCorrect = false;
+        if (!test_isEquation("10", true)) allCorrect = false;
+        if (!test_isEquation("e", true)) allCorrect = false;
+        if (!test_isEquation("sqr(x)-(x^2-4x)^3+3(x+1)^2", true)) allCorrect = false;
+        if (!test_isEquation("(x+(x+(x+(x+(x+(x+(x)))))))", true)) allCorrect = false;
+        if (!test_isEquation("((((((x)+2x)+3x)+4x)+5x)+6x)^2x", true)) allCorrect = false;
+        // Invalid Inputs
+        if (!test_isEquation("", false)) allCorrect = false;
+        if (!test_isEquation("()", false)) allCorrect = false;
+        if (!test_isEquation("x++1", false)) allCorrect = false;
+        if (!test_isEquation("x34+sin()", false)) allCorrect = false;
+        if (!test_isEquation("x^2+(2x-1", false)) allCorrect = false;
+        if (!test_isEquation("sin(2x)sin(2x)", false)) allCorrect = false;
+        if (!test_isEquation("sin(x)2.3423x", false)) allCorrect = false;
+        if (!test_isEquation("sin+3", false)) allCorrect = false;
+        if (!test_isEquation(";", false)) allCorrect = false;
+
+
     // Test Integrate:
         // Valid Inputs - anything invalid will be dealt with at the constructor stage
         if (!testEquation_Integrate(Equation("3x-1", 0, 0, 1), 0.5)) allCorrect = false;
@@ -154,15 +172,21 @@ bool equationTests() {
         std::vector<std::pair<double, double>> expected;
         expected = {{2.533029592, -1.591549431}, {0.6332573978, -0.7957747155}, {0.2814477323, -0.530516477}};
         if (!testEquation_Fourier(Equation("x^2-4x+3", 3, 0, 5), expected)) allCorrect = false;
-        expected.empty();
         expected = {{-0.003626857, -0.4205249818}, {-0.000911844, -0.2103588011}, {-0.000405695, -0.1402512503}};
         if (!testEquation_Fourier(Equation("log(x)+2x", 3, 2, 2.5), expected)) allCorrect = false;
-        expected.empty();
         expected = {{3.546241427, -14.25523635}, {-0.8865603569, 7.272750081}, {0.3940268253, -4.866417573}};
         if (!testEquation_Fourier(Equation("(4x+x^2)-(2x+3)^3+12x/2", 3, -0.5, 0.5), expected)) allCorrect = false;
-        expected.empty();
 
     return allCorrect;
+}
+bool test_isEquation(std::string s, bool expected) {
+    bool result = isEquation(s);
+
+    if (result != expected) {
+        std::cout << "Input " << s << " failed, should be " << expected << std::endl;
+        return false;
+    }
+    return true;
 }
 bool testEquation_Integrate(Equation e, double expected) {
     double result = e.integrate(0, 0, 0);   // Just testing that integration works - trig tested by Fourier function

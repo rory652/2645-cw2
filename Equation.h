@@ -7,6 +7,9 @@
 
 #include "Function.h"
 
+bool validSpecial(const char &c);      // Checks if a character is a valid special character
+bool isEquation(const std::string &s); // Checks if a string is a valid equation
+
 // Class containing the extra information for the equation
 class Equation : public Function {
     public:

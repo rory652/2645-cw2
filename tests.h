@@ -24,6 +24,7 @@ bool testFunction_String(std::string in, double expected);
 bool testFunction_Solve(Function f, double var, double expected);
 
 bool equationTests();
+bool test_isEquation(std::string s, bool expected);
 bool testEquation_Integrate(Equation e, double expected);           // Test Integration method
 bool testEquation_Fourier(Equation e, std::vector<std::pair<double, double>> expected);   // Test Fourier method
 

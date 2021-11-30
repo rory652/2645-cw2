@@ -4,6 +4,115 @@
 
 #include "Equation.h"
 
+bool validSpecial(const char &c) {
+    // Special characters that can only be part of a string
+    const std::vector<char> special = {'+', '-', '*', '/', '^', '(', ')', '.'};
+
+    for (auto s : special) {
+        if (s == c) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Test that a given equation is valid
+bool isEquation(const std::string &s) {
+    if (s.empty()) return false;
+
+    if (!isTerm(s)) {
+        int brackets = 0, last = 0, open = -1; bool wasOne = false;
+        for (int i = 0; i < s.length(); i++) {
+            if (!isalnum(s.at(i)) && !validSpecial(s.at(i))) {
+                std::cout << "Error: invalid character" << std::endl;
+                return false;
+            }
+
+            if (s.at(i) == '(') {
+                brackets++;
+                if (open == -1) {
+                    open = i;
+                }
+
+                if (open != last) {
+                    if (wasOne) {
+                        std::cout << "Error: invalid 1 operator term" << std::endl;
+                        return false;
+                    } else {
+                        if (!isDouble(s.substr(last, i-last))) {
+                            std::cout << "Error: invalid coefficient" << std::endl;
+                            return false;
+                        }
+                    }
+                }
+            } else if (s.at(i) == ')') {
+                brackets--;
+
+                if (brackets == 0) {
+                    if (!isEquation(s.substr(open + 1, i - (open + 1)))) {
+                        std::cout << "Error: invalid sub-function" << std::endl;
+                        return false;
+                    } else if (i != s.length() - 1) {
+                        if (!is2Operator(s.substr(i + 1, 1))) {
+                            std::cout << "Error: no operator after closing bracket" << std::endl;
+                            return false;
+                        }
+                    }
+                } else if (brackets < 0) {
+                    std::cout << "Error: missing matching close bracket" << std::endl;
+                    return false;
+                }
+
+                open = -1;
+                last = i + 1;
+            }
+
+            if (brackets == 0) {
+                // Make sure to check for string overflow later
+                if (is2Operator(s.substr(i, 1))) {
+                    if (last == i && s.at(i-1) != ')') {
+                        std::cout << "Error: consecutive operators found" << std::endl;
+                        return false;
+                    }
+                    std::string group = s.substr(last, i - last);
+                    wasOne = false;
+
+                    // Has to be term as Functions involve brackets and are dealt with differently
+                    if (!isTerm(group) && !group.empty()) {
+                        std::cout << "Error: invalid term" << std::endl;
+                        return false;
+                    }
+
+                    last = i + 1;
+                } else if (is1Operator(s.substr(i, 3))) {
+                    if (wasOne) {
+                        std::cout << "Error: consecutive 1 term operators found" << std::endl;
+                        return false;
+                    }
+
+                    wasOne = true;
+                    // Move i to the last letter of the 3 letter operator
+                    i += 2;
+                    last = i+1;
+                }
+
+                // Dealing with last character - should only be 2nd part of a 2 part operator
+                if (i == s.length() - 1 && last != s.length()) {
+                    if(!isTerm(s.substr(last, (i-last)+1))) {
+                        std::cout << "Error: invalid last term" << std::endl;
+                        return false;
+                    }
+                }
+            } else if (i == s.length() - 1) {
+                std::cout << "Error: unclosed bracket found" << std::endl;
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
 // I will be using Simpson's Rule to find the integral - https://mathworld.wolfram.com/SimpsonsRule.html
 double Equation::integrate(int trig, double n, double f) {
     double columns = 1000;                  // Number of columns for the integration, higher = more accurate. Must be even.

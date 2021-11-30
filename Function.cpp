@@ -4,8 +4,6 @@
 
 #include "Function.h"
 
-// TODO: Write function that checks for mathematical impossibilities and anything else not already covered.
-
 // Shouldn't really ever be called - here just in case
 Function::Function() {
     coefficient = 1;
@@ -20,7 +18,7 @@ Function::Function(const std::string& inStr) {
         if (inStr.at(i) == '(') {
             // Check if first open brackets had been found
             if (open == -1) {
-                    open = i;
+                open = i;
             }
             brackets++;
         } else if (inStr.at(i) == ')') {
@@ -114,7 +112,6 @@ double Function::solve(double var) {
                 } else if (o.first == "lne") {
                     result = log(tempResults.at(leftPos).second);
                 } else if (o.first == "log") {
-                    // TODO: Any base log?
                     result = log2(tempResults.at(leftPos).second);
                 } else if (o.first == "sqr") {
                     result = sqrt(tempResults.at(leftPos).second);
@@ -168,7 +165,7 @@ void Function::print() {
 
     while (t < terms.size() && o < operators.size()) {
         if (is2Operator(operators.at(o))) {
-            // Only need a special case on the third loop
+            // Only need a special case on the first loop
             if (t == 0 && o == 0) {
                 terms.at(t)->print();
                 std::cout << operators.at(o);
@@ -181,7 +178,12 @@ void Function::print() {
                 t++;
             }
         } else if (is1Operator(operators.at(o))) {
-            std::cout << operators.at(o);
+            if (operators.at(o) == "lne") {
+                // Remove redundant e when printing ln
+                std::cout << "ln";
+            } else {
+                std::cout << operators.at(o);
+            }
             terms.at(t)->print();
             t++;
         }
@@ -201,7 +203,7 @@ void Function::print() {
  * <double><char>
  * <char>
  */
-bool Function::isTerm(std::string str) {
+bool isTerm(std::string str) {
     // Remove any lingering whitespace/brackets
     str.erase(std::remove(str.begin(), str.end(), ' '), str.end());
     str.erase(std::remove(str.begin(), str.end(), '('), str.end());
@@ -222,14 +224,12 @@ bool Function::isTerm(std::string str) {
     return false;
 }
 
-// TODO: Write isFunction function for extra validation
-
-bool Function::is1Operator(const std::string& str) {
+bool is1Operator(const std::string& str) {
     // I gave 3 letter mnemonics to functions that had a name longer/shorter - square root -> sqr and ln -> lne
     return str == "sin" || str == "cos" || str == "tan" || str == "sqr" || str == "log" || str == "lne";
 }
 
-bool Function::is2Operator(const std::string& str) {
+bool is2Operator(const std::string& str) {
     return str == "+" || str == "-" || str == "*" || str == "/" || str == "^";
 }
 

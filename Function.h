@@ -17,6 +17,12 @@
 
 // Checks if an operator has a higher priority than the other
 bool isPriority(const std::pair<std::string, int>& a, const std::pair<std::string, int>& b);
+// Checks if the string is a term or a group
+bool isTerm(std::string str);
+// Checks if a string is a one term operator or not
+bool is1Operator(const std::string& str);
+// Checks if a string is a two term operator or not
+bool is2Operator(const std::string& str);
 
 class Function : public Group {
     public:
@@ -29,9 +35,6 @@ class Function : public Group {
         std::vector<std::unique_ptr<Group>> terms;          // Vector containing pointers to functions/terms
         std::vector<std::string> operators;                 // Vector containing the operators for terms
 
-        static bool isTerm(std::string str);                                // Checks if the string is a term or a group
-        static bool is1Operator(const std::string& str);                    // Checks if a string is a one term operator or not
-        static bool is2Operator(const std::string& str);                    // Checks if a string is a two term operator or not
         std::vector<std::pair<std::string, int>> sortOperators();           // Sorts the vector of operators to be in the order operations
 };
 
