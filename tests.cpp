@@ -87,6 +87,10 @@ bool functionTests() {
     // Test String:
         // Valid Inputs
         if (!testFunction_String("1", 1)) allCorrect = false;
+        if (!testFunction_String("e", M_E)) allCorrect = false;
+        if (!testFunction_String("pi", M_PI)) allCorrect = false;
+        if (!testFunction_String("2e", 2*M_E)) allCorrect = false;
+        if (!testFunction_String("2pi", 2*M_PI)) allCorrect = false;
         if (!testFunction_String("x", 1)) allCorrect = false;
         if (!testFunction_String("x+1", 2)) allCorrect = false;
         if (!testFunction_String("x-1", 0)) allCorrect = false;

@@ -20,7 +20,7 @@ Term::Term(std::string inStr) {
     var = false;    // Assume not a variable
 
     if (!inStr.empty()) {
-        if (std::isalpha(inStr.at(len-1)) && inStr.at(len-1) != 'e') {
+        if (std::isalpha(inStr.at(len-1)) && inStr.at(len-1) != 'e' && inStr.at(len-1) != 'i') {
             var = true;
             if (isDouble(inStr.substr(0, len-1))) {
                 coefficient = std::stod(inStr.substr(0, len-1));
@@ -31,15 +31,30 @@ Term::Term(std::string inStr) {
                 var = false;
             }
         } else if (inStr.at(len-1) == 'e') {
-            if (isDouble(inStr.substr(0, len-1))) {
-                coefficient = M_E*std::stod(inStr.substr(0, len-1));
-            } else if (inStr.substr(0, len-1).empty()) {
+            if (isDouble(inStr.substr(0, len - 1))) {
+                coefficient = M_E * std::stod(inStr.substr(0, len - 1));
+            } else if (inStr.substr(0, len - 1).empty()) {
                 coefficient = M_E;
             } else {
                 coefficient = -1;
             }
 
             var = false;
+        } else if (inStr.at(len-1) == 'i') {
+            if (inStr.length() >= 2) {
+                if (isDouble(inStr.substr(0, len - 2))) {
+                    coefficient = M_PI * std::stod(inStr.substr(0, len - 2));
+                } else if (inStr.substr(0, len - 2).empty()) {
+                    coefficient = M_PI;
+                } else {
+                    coefficient = -1;
+                }
+
+                var = false;
+            } else {
+                coefficient = -1;
+                var = false;
+            }
         } else {
             if (isDouble(inStr.substr(0, len))) {
                 coefficient = std::stod(inStr.substr(0, len));
