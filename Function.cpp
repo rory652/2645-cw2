@@ -154,37 +154,32 @@ double Function::solve(double var) {
     return coefficient*result;
 }
 
-void Function::print() {
+std::string Function::format() {
+    std::ostringstream out;
+    out.precision();
+
+    if (coefficient != 1) {
+        out << coefficient;
+    }
+
+    out << "(";
+
     // Keeps track of position in terms and in operators respectively
     int t = 0, o = 0;
 
-    if (coefficient != 1) {
-        std::cout << coefficient;
-    }
-    std::cout << "(";
-
     while (t < terms.size() && o < operators.size()) {
         if (is2Operator(operators.at(o))) {
-            // Only need a special case on the first loop
+            // Only need a special case on the third loop
             if (t == 0 && o == 0) {
-                terms.at(t)->print();
-                std::cout << operators.at(o);
-                terms.at(t + 1)->print();
+                out << terms.at(t)->format() << operators.at(o)  << terms.at(t + 1)->format();
                 // t incremented twice for the first loop
                 t += 2;
             } else {
-                std::cout << operators.at(o);
-                terms.at(t)->print();
+                out << operators.at(o) << terms.at(t)->format();
                 t++;
             }
         } else if (is1Operator(operators.at(o))) {
-            if (operators.at(o) == "lne") {
-                // Remove redundant e when printing ln
-                std::cout << "ln";
-            } else {
-                std::cout << operators.at(o);
-            }
-            terms.at(t)->print();
+            out << operators.at(o) << terms.at(t)->format();
             t++;
         }
         // Increment o
@@ -193,9 +188,12 @@ void Function::print() {
 
     // Prints any left-over terms
     if (t < terms.size()) {
-        terms.at(t)->print();
+        out << terms.at(t)->format();
     }
-    std::cout << ")";
+
+    out << ")";
+
+    return out.str();
 }
 
 /* Valid terms take the form of:

@@ -11,6 +11,7 @@
 #include <iostream>
 #include <algorithm>
 #include <cmath>
+#include <sstream>
 
 // Checks if the string is a double - e.g. 7.12345
 bool isDouble(const std::string& s);
@@ -22,7 +23,7 @@ class Term : public Group {
         explicit Term(std::string inStr);
 
         double solve(double var) override;
-        void print() override;
+        std::string format() override;
     private:
         bool var;
 };

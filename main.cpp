@@ -36,10 +36,10 @@ int main(int argc, char *argv[]) {
     Equation func(input, terms, lower, upper);
 
     printHeader("Your Equation");
-    func.print(); std::cout << std::endl;
+    std::cout << func.format() << std::endl;
     func.fourier();
     printHeader("Fourier Series");
-    func.printFourier();
+    std::cout << func.formatFourier() << std::endl;
 
     return 0;
 }

@@ -14,7 +14,7 @@ bool isEquation(const std::string &s); // Checks if a string is a valid equation
 class Equation : public Function {
     public:
         // Uses the Function constructor for the actual equation to avoid repeating code
-        Equation(std::string inStr, int n, double l, double u) : Function(inStr), numTerms(n), lower(l), upper(u), a0(0){};
+        Equation(const std::string& inStr, int n, double l, double u) : Function(inStr), numTerms(n), lower(l), upper(u), a0(0){};
 
         /*  trig: selects trig function - 0=none, 1=cosine, 2=sine
          *  n:    value to multiply f by (e.g. current term)
@@ -22,8 +22,9 @@ class Equation : public Function {
          */
         double integrate(int trig, double n, double f); // Integrates the function between the upper and lower bounds
         void fourier();                                 // Finds the values for the fourier series
-        void printFourier();                            // Prints fourier series
-        void print();                                   // Prints original equation
+
+        std::string format() override;                  // Returns the original equation as a string
+        std::string formatFourier();                    // Returns the fourier transform as a string
 
         std::pair<double, double> getFourier(int pos) {return ab_n.at(pos);}    // Return the fourier values at pos - ONLY for testing
     private:

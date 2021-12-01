@@ -156,23 +156,10 @@ void Equation::fourier() {
     }
 }
 
-void Equation::printFourier() {
-    // Check if fourier has actually been calculated yet
-    if (a0 == 0 && ab_n.empty()) fourier();
+std::string Equation::format() {
+    std::ostringstream out;
+    out.precision();
 
-    double f = (2*M_PI)/(upper-lower), n=1;
-
-    std::cout << "f(x) = " << a0;
-    for (auto t : ab_n) {
-        // Print cosine/a term then sine/b term.
-        std::cout << " + " << t.first << "cos(" << n*f << "x)";
-        std::cout << " + " << t.second << "sin(" << n*f << "x)";
-        n++;
-    }
-    std::cout << std::endl;
-}
-
-void Equation::print() {
     // Keeps track of position in terms and in operators respectively
     int t = 0, o = 0;
 
@@ -180,19 +167,15 @@ void Equation::print() {
         if (is2Operator(operators.at(o))) {
             // Only need a special case on the third loop
             if (t == 0 && o == 0) {
-                terms.at(t)->print();
-                std::cout << operators.at(o);
-                terms.at(t + 1)->print();
+                out << terms.at(t)->format() << operators.at(o)  << terms.at(t + 1)->format();
                 // t incremented twice for the first loop
                 t += 2;
             } else {
-                std::cout << operators.at(o);
-                terms.at(t)->print();
+                out << operators.at(o) << terms.at(t)->format();
                 t++;
             }
         } else if (is1Operator(operators.at(o))) {
-            std::cout << operators.at(o);
-            terms.at(t)->print();
+            out << operators.at(o) << terms.at(t)->format();
             t++;
         }
         // Increment o
@@ -201,6 +184,33 @@ void Equation::print() {
 
     // Prints any left-over terms
     if (t < terms.size()) {
-        terms.at(t)->print();
+        out << terms.at(t)->format();
     }
+
+    return out.str();
+}
+
+std::string Equation::formatFourier() {
+    std::ostringstream out;
+    out.precision();
+
+    out << a0;
+
+    double f = (2*M_PI)/(upper-lower), n=1;
+
+    for (auto t : ab_n) {
+        // Print cosine/a term then sine/b term.
+
+        // Write the correct sign for each term
+        if (t.first > 0) out << " + ";
+        else out << " - ";
+        out << std::abs(t.first) << "cos(" << n*f << "x)";
+
+        if (t.second > 0) out << " + ";
+        else out << " - ";
+        out << std::abs(t.second) << "cos(" << n*f << "x)";
+        n++;
+    }
+
+    return out.str();
 }

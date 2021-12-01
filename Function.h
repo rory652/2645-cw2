@@ -30,7 +30,7 @@ class Function : public Group {
         explicit Function(const std::string& inStr);
 
         double solve(double var) override;
-        void print() override;
+        std::string format() override;
     protected:
         std::vector<std::unique_ptr<Group>> terms;          // Vector containing pointers to functions/terms
         std::vector<std::string> operators;                 // Vector containing the operators for terms

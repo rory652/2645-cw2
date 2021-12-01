@@ -62,10 +62,14 @@ double Term::solve(double v) {
     }
 }
 
-// Add different variable characters later?
-void Term::print() {
-    if (coefficient != 1 || !var) std::cout << coefficient;
-    if (var) std::cout << "x";
+std::string Term::format() {
+    std::ostringstream out;
+    out.precision();
+
+    if (coefficient != 1 || !var) out << coefficient;
+    if (var) out << "x";
+
+    return out.str();
 }
 
 bool isDouble(const std::string& s) {

@@ -5,13 +5,15 @@
 #ifndef INC_2645_CW2_GROUP_H
 #define INC_2645_CW2_GROUP_H
 
+#include <string>
+
 class Group {
     public:
         virtual double solve(double var) = 0;
-        virtual void print() = 0;
+        virtual std::string format() = 0;
 
         // Public because it needs to be accessed by other functions
-        double coefficient;
+        double coefficient=0;
 };
 
 
