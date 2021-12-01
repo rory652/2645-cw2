@@ -4,8 +4,6 @@
 
 #include "Term.h"
 
-// TODO: pi support
-
 // These 2 are for testing
 Term::Term() {coefficient=1; var=false;}
 Term::Term(double c, bool v) {coefficient=c; var=v;}
