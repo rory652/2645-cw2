@@ -171,7 +171,7 @@ std::string Function::format() {
         if (is2Operator(operators.at(o))) {
             // Only need a special case on the third loop
             if (t == 0 && o == 0) {
-                out << terms.at(t)->format() << operators.at(o)  << terms.at(t + 1)->format();
+                out << terms.at(t)->format() << operators.at(o) << terms.at(t + 1)->format();
                 // t incremented twice for the first loop
                 t += 2;
             } else {

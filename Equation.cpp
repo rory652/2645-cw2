@@ -208,9 +208,33 @@ std::string Equation::formatFourier() {
 
         if (t.second > 0) out << " + ";
         else out << " - ";
-        out << std::abs(t.second) << "cos(" << n*f << "x)";
+        out << std::abs(t.second) << "sin(" << n*f << "x)";
         n++;
     }
 
     return out.str();
+}
+
+void Equation::saveEquation() {
+    std::ofstream output;
+    output.open("index.html");
+
+    // Write html file containing the graphs using Desmos api
+    output << "<html>"
+              " <head>"
+              "     <script src=\"https://www.desmos.com/api/v1.6/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6\"></script>"
+              " </head>"
+              " <body>"
+              "     <h3>Base Equation: " << format() <<
+              "     <br/>Fourier Equation: " << formatFourier() << "</h3>"
+              "     <div id=\"calculator\" style=\"width: 1600px; height: 1200px;\"></div>"
+              "     <script>"
+              "         var elt = document.getElementById('calculator');"
+              "         var calculator = Desmos.GraphingCalculator(elt);"
+              "         calculator.setExpression({ id: 'base', latex: 'y=" << format() << "' });"
+              "         calculator.setExpression({ id: 'fourier', latex: 'y=" << formatFourier() << "' });"
+              "     </script>"
+              " </body>";
+
+    output.close();
 }

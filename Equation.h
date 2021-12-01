@@ -5,6 +5,8 @@
 #ifndef INC_2645_CW2_EQUATION_H
 #define INC_2645_CW2_EQUATION_H
 
+#include <fstream>
+
 #include "Function.h"
 
 bool validSpecial(const char &c);      // Checks if a character is a valid special character
@@ -25,6 +27,7 @@ class Equation : public Function {
 
         std::string format() override;                  // Returns the original equation as a string
         std::string formatFourier();                    // Returns the fourier transform as a string
+        void saveEquation();                            // Saves the graph data to a file
 
         std::pair<double, double> getFourier(int pos) {return ab_n.at(pos);}    // Return the fourier values at pos - ONLY for testing
     private:

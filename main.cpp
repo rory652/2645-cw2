@@ -12,6 +12,7 @@ int main(int argc, char *argv[]) {
     // Declare functions
     int terms = 0; double lower = 0, upper = 0;
     std::string input;
+    char save = 0;
 
     printHeader("Help Key");
     printHelp();
@@ -40,6 +41,15 @@ int main(int argc, char *argv[]) {
     func.fourier();
     printHeader("Fourier Series");
     std::cout << func.formatFourier() << std::endl;
+
+    while (save != 'y' && save != 'Y' && save != 'n' && save != 'N') {
+        printHeader("Save Fourier? (y/n)");
+        std::cin >> save;
+    }
+
+    if (save == 'y' || save == 'Y') {
+        func.saveEquation();
+    }
 
     return 0;
 }
