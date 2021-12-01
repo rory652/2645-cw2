@@ -178,7 +178,12 @@ std::string Function::format() {
                 t++;
             }
         } else if (is1Operator(operators.at(o))) {
-            out << operators.at(o) << terms.at(t)->format();
+            if (operators.at(o) == "lne") {
+                out << "ln";
+            } else {
+                out << operators.at(o);
+            }
+            out << terms.at(t)->format();
             t++;
         }
         // Increment o
