@@ -1,2 +1,0 @@
-language = "cpp"
-run = "cd build && cmake ../ && cmake --build . && ./cw2"
